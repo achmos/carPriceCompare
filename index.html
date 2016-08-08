@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="myCarApp">
+    <head>
+        <title>TEST</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    </head>
+    <body ng-controller="TimeComparision as timeCompare">
+        <div>
+            Years to compare:
+            <select ng-model="timeCompare.timeLengthSelected" ng-options="time for time in timeCompare.timeLengthInYears" ng-change="timeCompare.updateSettings()">
+            </select>
+            <form>
+                Down Payment:<br>
+                <input name="payment" type="text" ng-model="timeCompare.payment" ng-change="timeCompare.updateSettings()"><br>
+                Interest Rate: <br>
+                <input name="rate" type="text" ng-model="timeCompare.rate" ng-change="timeCompare.updateSettings()"><br>
+                Time:<br>
+                <input name="time" type="text" ng-model="timeCompare.time" ng-change="timeCompare.updateSettings()"><br>
+                Miles Driven Per Month:<br>
+                <input name="miles" type="text" ng-model="timeCompare.miles" ng-change="timeCompare.updateSettings()"><br>
+                Dollars Per Gallon<br>
+                <input name="ppg" type="text" ng-model="timeCompare.ppg" ng-change="timeCompare.updateSettings()"><br>
+            </form>
+            <br>
+            <button addcar ctrlr="timeCompare" update="updateSettings">Add Another Car</button>
+        </div>
+        <hr>
+        <div id="cars">
+            <rt-car-info></rt-car-info>
+        </div>
+        <script src="control.js"></script>
+    </body>
+</html>

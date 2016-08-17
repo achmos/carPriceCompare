@@ -1,29 +1,23 @@
-var mord = angular.module('myCarApp',[]);
+var carComparisonApp = angular.module('myCarApp',[]);
 
-mord.controller('MonthlyCost', ['$scope', function($scope) {
-    var payment;
-    var time;
-    var miles;
-    var rate; 
-    var ppg;
+carComparisonApp.controller('MonthlyCost', ['$scope', "carUserValues", function($scope, carUserValues) {
     var monthlyCost = this;    
         
     monthlyCost.paymentCost = 0;
     monthlyCost.gasCost = 0;
     monthlyCost.totalCost = 0;
     monthlyCost.costAfterSomeYears = 0;
-    monthlyCost.timeLengthSelected = 0;
     monthlyCost.mpg;
     monthlyCost.price;
     
     monthlyCost.calculateMonthlyCost = function() {
-        monthlyCost.paymentCost = ((monthlyCost.price - payment)*(rate/12))/(1-Math.pow((1+(rate/12)),(-time)));
+        monthlyCost.paymentCost = ((monthlyCost.price - carUserValues.getDownPayment())*(carUserValues.getRate()/12))/(1-Math.pow((1+(carUserValues.getRate()/12)),(-carUserValues.getTime())));
         monthlyCost.updateTotalCost();
         monthlyCost.calculateCostAfterNumberOfYears();
     };
     
     monthlyCost.calculateGasCost = function() {
-        monthlyCost.gasCost = (miles/monthlyCost.mpg)*ppg;
+        monthlyCost.gasCost = (carUserValues.getMiles()/monthlyCost.mpg)*carUserValues.getPPG();
         monthlyCost.updateTotalCost();
         monthlyCost.calculateCostAfterNumberOfYears();
     };
@@ -33,10 +27,10 @@ mord.controller('MonthlyCost', ['$scope', function($scope) {
     };
     
     monthlyCost.calculateCostAfterNumberOfYears = function() {
-        var timeLengthInMonths = monthlyCost.timeLengthSelected * 12;
-        var timeLengthInMonthsForPayments = time;
+        var timeLengthInMonths = carUserValues.getTimeLengthSelected() * 12;
+        var timeLengthInMonthsForPayments = carUserValues.getTime();
         
-        if (time > timeLengthInMonths) 
+        if (carUserValues.getTime() > timeLengthInMonths) 
             timeLengthInMonthsForPayments = timeLengthInMonths;
         
         var totalGasCost = monthlyCost.gasCost * timeLengthInMonths;
@@ -44,22 +38,18 @@ mord.controller('MonthlyCost', ['$scope', function($scope) {
         monthlyCost.costAfterSomeYears = totalGasCost + totalPaymentCost;
     };
     
-    $scope.$on("updateUserSettings", function(event, args) {
-        payment = args.payment;
-        time = args.time;
-        miles = args.miles;
-        rate = args.rate; 
-        ppg = args.ppg;
-        
-        monthlyCost.timeLengthSelected = args.timeSelected;
-        
+    monthlyCost.getTimeLengthSelected = function() {
+        return carUserValues.getTimeLengthSelected();
+    }
+    
+    $scope.$on("updateUserSettings", function(event, args) {        
         monthlyCost.calculateMonthlyCost();
         monthlyCost.calculateGasCost();
         monthlyCost.calculateCostAfterNumberOfYears();
     });
 }]); 
 
-mord.controller('TimeComparision', ['$scope', function($scope) {
+carComparisonApp.controller('TimeComparision', ['$scope', "carUserValues", function($scope, carUserValues) {
     var timeCompare = this;
     timeCompare.timeLengthInYears = [1,2,5,10,15,20];
     timeCompare.timeLengthSelected = 0;
@@ -72,37 +62,38 @@ mord.controller('TimeComparision', ['$scope', function($scope) {
     timeCompare.payment;
     
     timeCompare.updateSettings = function () {
-        $scope.$broadcast("updateUserSettings", 
-        {
+        var userValues = {
             timeSelected: timeCompare.timeLengthSelected,
             miles: timeCompare.miles, 
             ppg: timeCompare.ppg,
             time: timeCompare.time,
             rate: timeCompare.rate,
             payment: timeCompare.payment
-        });
+        };
+        
+        carUserValues.setUserValues(userValues);
+        $scope.$broadcast("updateUserSettings");
     };
 }]);
 
-mord.directive('rtCarInfo', function() {
+carComparisonApp.directive('rtCarInfo', function() {
     return {
         restrict: 'E',
         templateUrl: 'carInfo.html'
     };
 });
 
-mord.directive("addcar", [ "$compile" ,function($compile) {
+carComparisonApp.directive("addcar", [ "$compile",function($compile) {
     return function(scope, element, attrs) {
         element.bind("click", function() {
             var linkFn = $compile("<rt-car-info></rt-car-info>");
             var newContent = linkFn(scope);
             angular.element(document.getElementById('cars')).append(newContent);
-            scope[atrrs.ctrlr][attrs.update]();
         });
     };
 }]);
 
-mord.factory("car", function() {
+carComparisonApp.factory("carUserValues", function() {
     var service = {};
     var payment;
     var time;
@@ -111,8 +102,13 @@ mord.factory("car", function() {
     var ppg;
     var timeLengthSelected;
     
-    service.setValues = function() {
-        
+    service.setUserValues = function(userValues) {
+        payment = userValues.payment;
+        time = userValues.time;
+        miles = userValues.miles;
+        rate = userValues.rate; 
+        ppg = userValues.ppg;
+        timeLengthSelected = userValues.timeSelected;
     }
     
     service.getDownPayment = function() {
@@ -133,6 +129,10 @@ mord.factory("car", function() {
     
     service.getPPG = function() {
         return ppg;
+    };
+    
+    service.getTimeLengthSelected = function() {
+        return timeLengthSelected;
     };
     
     return service;

@@ -2,50 +2,69 @@ var carComparisonApp = angular.module('myCarApp',[]);
 
 carComparisonApp.controller('MonthlyCost', ['$scope', "carUserValues", function($scope, carUserValues) {
     var monthlyCost = this;    
-        
+    
+    var MONTHS_IN_A_YEAR = 12;
+    var gasCostAfterSomeYears; 
+    var paymentCostAfterSomeYears;
+    
     monthlyCost.paymentCost = 0;
     monthlyCost.gasCost = 0;
-    monthlyCost.totalCost = 0;
-    monthlyCost.costAfterSomeYears = 0;
     monthlyCost.mpg;
-    monthlyCost.price;
+    monthlyCost.carPrice;
     
-    monthlyCost.calculateMonthlyCost = function() {
-        monthlyCost.paymentCost = ((monthlyCost.price - carUserValues.getDownPayment())*(carUserValues.getRate()/12))/(1-Math.pow((1+(carUserValues.getRate()/12)),(-carUserValues.getTime())));
-        monthlyCost.updateTotalCost();
-        monthlyCost.calculateCostAfterNumberOfYears();
-    };
-    
-    monthlyCost.calculateGasCost = function() {
-        monthlyCost.gasCost = (carUserValues.getMiles()/monthlyCost.mpg)*carUserValues.getPPG();
-        monthlyCost.updateTotalCost();
-        monthlyCost.calculateCostAfterNumberOfYears();
-    };
-    
-    monthlyCost.updateTotalCost = function() {
-        monthlyCost.totalCost = monthlyCost.gasCost + monthlyCost.paymentCost;
-    };
-    
-    monthlyCost.calculateCostAfterNumberOfYears = function() {
-        var timeLengthInMonths = carUserValues.getTimeLengthSelected() * 12;
-        var timeLengthInMonthsForPayments = carUserValues.getTime();
+    monthlyCost.calculateMonthlyPaymentCost = function() {
+        var paymentNumerator = ( (monthlyCost.carPrice - carUserValues.getDownPayment()) * (carUserValues.getRate()/12) );
+        var paymentDenominator = ( 1 - Math.pow( (1 + (carUserValues.getRate()/12) ) , ( 0 - carUserValues.getTime()) ) );
+        monthlyCost.paymentCost = paymentNumerator/paymentDenominator; 
         
-        if (carUserValues.getTime() > timeLengthInMonths) 
+        if (isNaN(monthlyCost.paymentCost)) {
+            monthlyCost.paymentCost = 0;
+        } else if (parseInt(monthlyCost.carPrice) < parseInt(carUserValues.getDownPayment()) ) {
+            monthlyCost.paymentCost = 0;
+        }
+        
+        monthlyCost.calculatePaymentCostAfterSomeYears();
+    };
+    
+    monthlyCost.calculatePaymentCostAfterSomeYears = function() {
+        var timeLengthInMonths = carUserValues.getTimeLengthSelected() * MONTHS_IN_A_YEAR;
+        var timeLengthInMonthsForPayments = carUserValues.getTime();
+        if (timeLengthInMonthsForPayments > timeLengthInMonths) 
             timeLengthInMonthsForPayments = timeLengthInMonths;
         
-        var totalGasCost = monthlyCost.gasCost * timeLengthInMonths;
         var totalPaymentCost = monthlyCost.paymentCost *  timeLengthInMonthsForPayments;
-        monthlyCost.costAfterSomeYears = totalGasCost + totalPaymentCost;
+        paymentCostAfterSomeYears = totalPaymentCost;
+    };
+    
+    monthlyCost.calculateMonthlyGasCost = function() {
+        monthlyCost.gasCost = (carUserValues.getMiles()/monthlyCost.mpg)*carUserValues.getPPG();
+        
+        if (!isFinite(monthlyCost.gasCost)) {
+            monthlyCost.gasCost = 0;
+        }
+        
+        monthlyCost.calculateGasCostAfterSomeYears();
+    };
+    
+    monthlyCost.calculateGasCostAfterSomeYears = function() {
+        gasCostAfterSomeYears = monthlyCost.gasCost * carUserValues.getTimeLengthSelected() * MONTHS_IN_A_YEAR;
+    };
+    
+    monthlyCost.totalMonthlyCost = function() {
+        return monthlyCost.gasCost + monthlyCost.paymentCost;
+    };
+    
+    monthlyCost.totalCostAfterSomeYears = function() {
+        return gasCostAfterSomeYears + paymentCostAfterSomeYears;
     };
     
     monthlyCost.getTimeLengthSelected = function() {
         return carUserValues.getTimeLengthSelected();
-    }
+    };
     
     $scope.$on("updateUserSettings", function(event, args) {        
-        monthlyCost.calculateMonthlyCost();
-        monthlyCost.calculateGasCost();
-        monthlyCost.calculateCostAfterNumberOfYears();
+        monthlyCost.calculateMonthlyPaymentCost();
+        monthlyCost.calculateMonthlyGasCost();
     });
 }]); 
 
@@ -100,7 +119,7 @@ carComparisonApp.factory("carUserValues", function() {
     var miles;
     var rate;
     var ppg;
-    var timeLengthSelected;
+    var timeLengthSelected = 0;
     
     service.setUserValues = function(userValues) {
         payment = userValues.payment;
@@ -109,7 +128,7 @@ carComparisonApp.factory("carUserValues", function() {
         rate = userValues.rate; 
         ppg = userValues.ppg;
         timeLengthSelected = userValues.timeSelected;
-    }
+    };
     
     service.getDownPayment = function() {
         return payment;

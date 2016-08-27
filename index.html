@@ -13,15 +13,15 @@
             </select>
             <form>
                 Down Payment:<br>
-                <input name="payment" type="text" ng-model="timeCompare.payment" ng-change="timeCompare.updateSettings()"><br>
+                <input name="payment" type="number" ng-model="timeCompare.payment" ng-change="timeCompare.updateSettings()"><br>
                 Interest Rate: <br>
-                <input name="rate" type="text" ng-model="timeCompare.rate" ng-change="timeCompare.updateSettings()"><br>
+                <input name="rate" type="number" ng-model="timeCompare.rate" ng-change="timeCompare.updateSettings()"><br>
                 Time:<br>
-                <input name="time" type="text" ng-model="timeCompare.time" ng-change="timeCompare.updateSettings()"><br>
+                <input name="time" type="number" ng-model="timeCompare.time" ng-change="timeCompare.updateSettings()"><br>
                 Miles Driven Per Month:<br>
-                <input name="miles" type="text" ng-model="timeCompare.miles" ng-change="timeCompare.updateSettings()"><br>
+                <input name="miles" type="number" ng-model="timeCompare.miles" ng-change="timeCompare.updateSettings()"><br>
                 Dollars Per Gallon<br>
-                <input name="ppg" type="text" ng-model="timeCompare.ppg" ng-change="timeCompare.updateSettings()"><br>
+                <input name="ppg" type="number" ng-model="timeCompare.ppg" ng-change="timeCompare.updateSettings()"><br>
             </form>
             <br>
             <button addcar>Add Another Car</button>

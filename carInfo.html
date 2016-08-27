@@ -3,22 +3,22 @@
                 <p>Monthly Payments</p>
                 <form>
                     Price:<br>
-                    <input name="price" type="text" ng-model="monthlyCost.price" ng-change="monthlyCost.calculateMonthlyCost()"><br>
+                    <input name="price" type="number" ng-model="monthlyCost.carPrice" ng-change="monthlyCost.calculateMonthlyPaymentCost()"><br>
                 </form>
-                <p>Monthly Cost is: <span ng-bind="monthlyCost.paymentCost"></span></p>
+                <p>Monthly Cost is: <span ng-bind="monthlyCost.paymentCost | currency"></span></p>
             </div>
             <div>
                 <p>Gas Cost</p>
                 <form>
                     Miles Per Gallon:<br>
-                    <input name="mpg" type="text" ng-model="monthlyCost.mpg" ng-change="monthlyCost.calculateGasCost()"><br>
+                    <input name="mpg" type="number" ng-model="monthlyCost.mpg" ng-change="monthlyCost.calculateMonthlyGasCost()"><br>
                 </form>
-                <p>Monthly Gas Cost is: <span ng-bind="monthlyCost.gasCost"></span></p>
+                <p>Monthly Gas Cost is: <span ng-bind="monthlyCost.gasCost | currency"></span></p>
             </div>
             <div>
-                <p>Total Cost: <span ng-bind="monthlyCost.totalCost"></span></p>
+                <p>Total Cost: <span ng-bind="monthlyCost.totalMonthlyCost() | currency"></span></p>
             </div>
             <div>
-                <p>Total Cost after <span ng-bind="monthlyCost.getTimeLengthSelected()"></span> years: <span ng-bind="monthlyCost.costAfterSomeYears"></span></p>
+                <p>Total Cost after <span ng-bind="monthlyCost.getTimeLengthSelected()"></span> years: <span ng-bind="monthlyCost.totalCostAfterSomeYears()  | currency"></span></p>
             </div>
         </div>

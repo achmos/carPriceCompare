@@ -98,7 +98,7 @@ carComparisonApp.controller('TimeComparision', ['$scope', "carUserValues", funct
 carComparisonApp.directive('rtCarInfo', function() {
     return {
         restrict: 'E',
-        templateUrl: 'carInfo.html'
+        templateUrl: 'templates/carInfo.html'
     };
 });
 

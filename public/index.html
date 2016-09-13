@@ -4,7 +4,7 @@
         <title>TEST</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
     </head>
     <body ng-controller="TimeComparision as timeCompare">
         <div>
@@ -23,13 +23,13 @@
                 Dollars Per Gallon<br>
                 <input name="ppg" type="number" ng-model="timeCompare.ppg" ng-change="timeCompare.updateSettings()"><br>
             </form>
-            <br>
+            <br> 
             <button addcar>Add Another Car</button>
         </div>
         <hr>
         <div id="cars">
             <rt-car-info></rt-car-info>
         </div>
-        <script src="control.js"></script>
+        <script src="scripts/control.js"></script>
     </body>
 </html>

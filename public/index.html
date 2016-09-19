@@ -1,35 +1,89 @@
 <!DOCTYPE html>
 <html ng-app="myCarApp">
     <head>
-        <title>TEST</title>
+        <title>Car Comparison - By Ramin Tawakuli</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+        
+        <!-- external stylesheets -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        
+        <!-- stylesheets -->
+        <link rel="stylesheet" href="css/main.css">
+        
+        <!-- external javascript files-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+        <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.1.3.js"></script>
     </head>
     <body ng-controller="TimeComparision as timeCompare">
-        <div>
-            Years to compare:
-            <select ng-model="timeCompare.timeLengthSelected" ng-options="time for time in timeCompare.timeLengthInYears" ng-change="timeCompare.updateSettings()">
-            </select>
-            <form>
-                Down Payment:<br>
-                <input name="payment" type="number" ng-model="timeCompare.payment" ng-change="timeCompare.updateSettings()"><br>
-                Interest Rate: <br>
-                <input name="rate" type="number" ng-model="timeCompare.rate" ng-change="timeCompare.updateSettings()"><br>
-                Time:<br>
-                <input name="time" type="number" ng-model="timeCompare.time" ng-change="timeCompare.updateSettings()"><br>
-                Miles Driven Per Month:<br>
-                <input name="miles" type="number" ng-model="timeCompare.miles" ng-change="timeCompare.updateSettings()"><br>
-                Dollars Per Gallon<br>
-                <input name="ppg" type="number" ng-model="timeCompare.ppg" ng-change="timeCompare.updateSettings()"><br>
-            </form>
-            <br> 
-            <button addcar>Add Another Car</button>
+        <nav class="navbar navbar-inverse navbar-default navbar-fixed-top">
+            <div class="container" ng-controller="ModelCtrl as mdCtrl">
+                <a href="#" class="navbar-brand" ng-click="mdCtrl.open()">About</a>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="jumbotron">
+                        <h1>Car Price Compare!</h1>
+                        <p>Use this app to compare the prices of cars based on the MSRP*, MPG rating, and how much you drive!</p>
+                        <p>*Note, this website assumes you are comparing cars for purchase in the United States.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <form class="form">
+                    <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-2 control-label myfix">Down Payment:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-2">
+                            <input id="payment" type="number" class="form-control" ng-model="timeCompare.payment" ng-change="timeCompare.updateSettings()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-2 control-label myfix">Interest Rate:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-2">
+                            <input id="rate" type="number" class="form-control" ng-model="timeCompare.rate" ng-change="timeCompare.updateSettings()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-2 control-label myfix">Time (Months):</label>
+                        <div class="col-xs-6 col-sm-3 col-md-2">
+                            <input id="time" type="number" class="form-control" ng-model="timeCompare.time" ng-change="timeCompare.updateSettings()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-2 control-label myfix">Miles Per Month:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-2">
+                            <input id="miles" type="number" class="form-control" ng-model="timeCompare.miles" ng-change="timeCompare.updateSettings()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-2 control-label myfix">Price of a Gallon</label>
+                        <div class="col-xs-6 col-sm-3 col-md-2">
+                            <input id="ppg" type="number" class="form-control" ng-model="timeCompare.ppg" ng-change="timeCompare.updateSettings()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-2 control-label myfix">Years to compare:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-2">
+                            <select id="years" class="form-control" ng-model="timeCompare.timeLengthSelected" ng-options="time for time in timeCompare.timeLengthInYears" ng-change="timeCompare.updateSettings()"></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <button addcar class="btn btn-primary">Add Another Car</button>
+                </div>
+            </div>
+            <hr>
+            <div class="row" id="cars">
+                <rt-car-info></rt-car-info>
+                <rt-car-info></rt-car-info>
+            </div>   
         </div>
-        <hr>
-        <div id="cars">
-            <rt-car-info></rt-car-info>
-        </div>
+        <!-- javascript -->
         <script src="scripts/control.js"></script>
+        <script src="scripts/aboutModal.js"></script>
     </body>
 </html>

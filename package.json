@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node_modules/.bin/nodemon app.js --watch -e js,css,html",
+    "start": "node_modules/.bin/nodemon app.js",
+    "dev": "node_modules/.bin/nodemon app.js --watch -e js,css,html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

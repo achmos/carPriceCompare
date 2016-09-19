@@ -1,24 +1,18 @@
-<div ng-controller="MonthlyCost as monthlyCost" style="float:left; width: 200px">
-            <div>
-                <p>Monthly Payments</p>
-                <form>
-                    Price:<br>
-                    <input name="price" type="number" ng-model="monthlyCost.carPrice" ng-change="monthlyCost.calculateMonthlyPaymentCost()"><br>
-                </form>
-                <p>Monthly Cost is: <span ng-bind="monthlyCost.paymentCost | currency"></span></p>
+<div ng-controller="MonthlyCost as monthlyCost" class="col-xs-6 col-sm-4 col-md-3">
+    <div class="well well-sm">
+        <form>
+            <div class="form-group">
+                <label for="price">Price:</label><br>
+                <input id="price" type="number" class="form-control" ng-model="monthlyCost.carPrice" ng-change="monthlyCost.calculateMonthlyPaymentCost()"><br>
             </div>
-            <div>
-                <p>Gas Cost</p>
-                <form>
-                    Miles Per Gallon:<br>
-                    <input name="mpg" type="number" ng-model="monthlyCost.mpg" ng-change="monthlyCost.calculateMonthlyGasCost()"><br>
-                </form>
-                <p>Monthly Gas Cost is: <span ng-bind="monthlyCost.gasCost | currency"></span></p>
+            <div class="form-group">
+                <label for="mpg">Miles Per Gallon:</label> <br>
+                <input id="mpg" type="number" class="form-control" ng-model="monthlyCost.mpg" ng-change="monthlyCost.calculateMonthlyGasCost()"><br>
             </div>
-            <div>
-                <p>Total Cost: <span ng-bind="monthlyCost.totalMonthlyCost() | currency"></span></p>
-            </div>
-            <div>
-                <p>Total Cost after <span ng-bind="monthlyCost.getTimeLengthSelected()"></span> years: <span ng-bind="monthlyCost.totalCostAfterSomeYears()  | currency"></span></p>
-            </div>
-        </div>
+        </form>
+        <p>Monthly Payment is: <span ng-bind="monthlyCost.paymentCost | currency"></span></p>
+        <p>Monthly Gas Cost is: <span ng-bind="monthlyCost.gasCost | currency"></span></p>
+        <p>Total Cost Per Month: <span ng-bind="monthlyCost.totalMonthlyCost() | currency"></span></p>
+        <p>Total Cost after <span ng-bind="monthlyCost.getTimeLengthSelected()"></span> years: <span ng-bind="monthlyCost.totalCostAfterSomeYears()  | currency"></span></p>
+    </div>
+</div>

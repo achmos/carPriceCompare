@@ -1,4 +1,4 @@
-var carComparisonApp = angular.module('myCarApp',[]);
+var carComparisonApp = angular.module('myCarApp',['ui.bootstrap']);
 
 carComparisonApp.controller('MonthlyCost', ['$scope', "carUserValues", function($scope, carUserValues) {
     var monthlyCost = this;    

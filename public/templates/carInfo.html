@@ -10,9 +10,9 @@
                 <input id="mpg" type="number" class="form-control" ng-model="monthlyCost.mpg" ng-change="monthlyCost.calculateMonthlyGasCost()"><br>
             </div>
         </form>
-        <p>Monthly Payment is: <span ng-bind="monthlyCost.paymentCost | currency"></span></p>
-        <p>Monthly Gas Cost is: <span ng-bind="monthlyCost.gasCost | currency"></span></p>
-        <p>Total Cost Per Month: <span ng-bind="monthlyCost.totalMonthlyCost() | currency"></span></p>
-        <p>Total Cost after <span ng-bind="monthlyCost.getTimeLengthSelected()"></span> years: <span ng-bind="monthlyCost.totalCostAfterSomeYears()  | currency"></span></p>
+        <p>Monthly Payment is: <span id="paymentCost" ng-bind="monthlyCost.paymentCost | currency"></span></p>
+        <p>Monthly Gas Cost is: <span id="gasCost" ng-bind="monthlyCost.gasCost | currency"></span></p>
+        <p>Total Cost Per Month: <span id="totalMonthlyCost" ng-bind="monthlyCost.totalMonthlyCost() | currency"></span></p>
+        <p>Total Cost after <span ng-bind="monthlyCost.getTimeLengthSelected()"></span> years: <span id="totalCostAfterSomeYears" ng-bind="monthlyCost.totalCostAfterSomeYears()  | currency"></span></p>
     </div>
 </div>
